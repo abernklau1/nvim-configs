@@ -6,11 +6,11 @@ vim.g.loaded_netrwPlugin = 1
 -- Get Lazy
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git", "clone", "--filter=blob:none",
-        "https://github.com/folke/lazy.nvim.git", "--branch=stable", -- latest stable release
-        lazypath
-    })
+	vim.fn.system({
+		"git", "clone", "--filter=blob:none",
+		"https://github.com/folke/lazy.nvim.git", "--branch=stable",     -- latest stable release
+		lazypath
+	})
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -21,6 +21,4 @@ vim.g.mapleader = " "
 require("svim.config.keymaps"):load_defaults()
 require("svim.config.settings")
 
-local plugins = require("svim.plugins")
-require("lazy").setup("svim.plugins")
-
+require("lazy").setup("svim.plugins", { ui = { border = "rounded" } })

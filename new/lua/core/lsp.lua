@@ -22,7 +22,7 @@ local lsp = {
 		"--header-insertion-decorators"
 	},
 	filetypes = { "c", "cpp", "objc", "objcpp" },
-	-- root_dir = utils.root_pattern("compile_commands.json", "compile_flags.txt", ".git", "config.yaml")
+	-- root_dir = utils.root_pattern(".config", ".clang-tidy", ".clang-format", compile_commands.json", "compile_flags.txt", ".git", "config.yaml"),
 	init_option = { fallbackFlags = { "-std=c++2a" } }
 }
 local zls = { capabilities = capabilities }
