@@ -1,3 +1,5 @@
+local icons = require("svim.icons")
+
 ---@alias telescope_themes
 ---| "cursor"   # see `telescope.themes.get_cursor()`
 ---| "dropdown" # see `telescope.themes.get_dropdown()`
@@ -11,8 +13,8 @@ local telescope = {
     on_config_done = nil,
     theme = "dropdown", ---@type telescope_themes
     defaults = {
-        prompt_prefix = bvim.icons.ui.Telescope .. " ",
-        selection_caret = bvim.icons.ui.Forward .. " ",
+        prompt_prefix = icons.ui.Telescope .. " ",
+        selection_caret = icons.ui.Forward .. " ",
         entry_prefix = "  ",
         initial_mode = "insert",
         selection_strategy = "reset",

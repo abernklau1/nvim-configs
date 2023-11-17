@@ -1,4 +1,5 @@
 local mason = {
+    ensure_installed = {"clangd", "clang_format"},
     ui = {
         check_outdated_packages_on_open = true,
         width = 0.8,
@@ -22,12 +23,6 @@ local mason = {
         package_pending = "◍",
         package_uninstalled = "◍"
     },
-
-    -- NOTE: should be available in $PATH
-    -- install_root_dir = join_paths(vim.fn.stdpath "data", "mason"),
-
-    -- NOTE: already handled in the bootstrap stage
-    -- PATH = "skip",
 
     pip = {
         upgrade_pip = false,

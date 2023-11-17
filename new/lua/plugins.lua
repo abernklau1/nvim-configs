@@ -69,7 +69,13 @@ return {
 
     -- nvim-cmp source for filesystem paths.
     {"hrsh7th/cmp-path", lazy = true}, -- nvim-cmp source for vim's cmdline.
-    {"hrsh7th/cmp-cmdline", lazy = true, enabled = true}, -- Autopair plugin
+    {"hrsh7th/cmp-cmdline", lazy = true, enabled = true}, {
+        "L3mon4D3/LuaSnip",
+        -- follow latest release.
+        version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+        -- install jsregexp (optional!).
+        build = "make install_jsregexp"
+    }, -- Autopair plugin
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
@@ -154,7 +160,9 @@ return {
         config = function()
             -- load colorscheme
             vim.cmd("colorscheme oh-lucy")
-        end
+        end,
+        lazy = false,
+        priority = 1000
     }
 
 }
