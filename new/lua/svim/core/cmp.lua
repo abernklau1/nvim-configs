@@ -1,0 +1,98 @@
+local icons = require("svim.icons")
+
+local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
+if not status_cmp_ok then return end
+local ConfirmBehavior = cmp_types.ConfirmBehavior
+local SelectBehavior = cmp_types.SelectBehavior
+
+local cmp = require("svim.utils.modules").require_on_index "cmp"
+local luasnip = require("svim.utils.modules").require_on_index "luasnip"
+local cmp_window = require "cmp.config.window"
+local cmp_mapping = require "cmp.config.mapping"
+
+local M = {}
+
+M.cmp = {
+    enabled = function()
+        local buftype = vim.api.nvim_buf_get_option(0, "buftype")
+        if buftype == "prompt" then return false end
+        return true
+    end,
+    confirm_opts = {behavior = ConfirmBehavior.Replace, select = false},
+    completion = {
+        ---@usage The minimum length of a word to complete on.
+        keyword_length = 1
+    },
+    experimental = {ghost_text = false, native_menu = false},
+    formatting = {
+        fields = {"kind", "abbr", "menu"},
+        max_width = 0,
+        kind_icons = icons.kind,
+        source_names = {
+            nvim_lsp = "(LSP)",
+            emoji = "(Emoji)",
+            path = "(Path)",
+
+            vsnip = "(Snippet)",
+            luasnip = "(Snippet)",
+            buffer = "(Buffer)",
+            treesitter = "(TreeSitter)"
+        },
+        duplicates = {buffer = 1, path = 1, nvim_lsp = 0, luasnip = 1},
+        duplicates_default = 0
+    },
+    snippet = {expand = function(args) luasnip.lsp_expand(args.body) end},
+    window = {
+        completion = cmp_window.bordered(),
+        documentation = cmp_window.bordered()
+    },
+    sources = {
+        {
+            -- keyword_length = 0,
+            max_item_count = 3,
+            trigger_characters = {
+                {
+                    ".", ":", "(", "'", '"', "[", ",", "#", "*", "@", "|", "=",
+                    "-", "{", "/", "\\", "+", "?", " "
+                    -- "\t",
+                    -- "\n",
+                }
+            }
+        }, {
+            name = "nvim_lsp",
+            entry_filter = function(entry, ctx)
+                local kind =
+                    require("cmp.types.lsp").CompletionItemKind[entry:get_kind()]
+                if kind == "Snippet" and ctx.prev_context.filetype == "java" then
+                    return false
+                end
+                return true
+            end
+        }, {name = "path"}, {name = "luasnip"}, {name = "nvim_lua"},
+        {name = "buffer"}, {name = "calc"}, {name = "emoji"},
+        {name = "treesitter"}, {name = "tmux"}
+    },
+    mapping = cmp_mapping.preset.insert {
+        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<Tab>'] = cmp.mapping.select_next_item({
+            behavior = SelectBehavior,
+            count = 1
+        }),
+        ["\\"] = cmp.mapping.select_prev_item({
+            behavior = SelectBehavior,
+            count = 1
+        }),
+        ['<CR>'] = cmp.mapping.confirm({select = true})
+    }
+}
+
+M.setup = function()
+    local status_ok, cmp_conf = pcall(require, "cmp")
+    if not status_ok then return end
+    cmp_conf.setup(M.cmp)
+end
+
+return M
