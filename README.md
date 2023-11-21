@@ -1,4 +1,4 @@
-# NeoVim Configurations (WIP)
+# NeoVim Configurations
 
 A repo containing my Neovim configuration as it is from the nvim base directory.
 
